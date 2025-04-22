@@ -100,6 +100,7 @@ class DatasetRetrieval:
         :param hit_callback: hit callback
         :param message_id: message id
         :param memory: memory
+        :param inputs: inputs
         :return:
         """
         dataset_ids = config.dataset_ids
@@ -205,6 +206,7 @@ class DatasetRetrieval:
             source = {
                 "dataset_id": item.metadata.get("dataset_id"),
                 "dataset_name": item.metadata.get("dataset_name"),
+                "document_id": item.metadata.get("document_id") or item.metadata.get("title"),
                 "document_name": item.metadata.get("title"),
                 "data_source_type": "external",
                 "retriever_from": invoke_from.to_source(),
@@ -734,6 +736,7 @@ class DatasetRetrieval:
         Calculate keywords scores
         :param query: search query
         :param documents: documents for reranking
+        :param top_k: top k
 
         :return:
         """
@@ -1031,8 +1034,6 @@ class DatasetRetrieval:
     ) -> tuple[ModelInstance, ModelConfigWithCredentialsEntity]:
         """
         Fetch model config
-        :param node_data: node data
-        :return:
         """
         if model is None:
             raise ValueError("single_retrieval_config is required")
